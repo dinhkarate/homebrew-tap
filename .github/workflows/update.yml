@@ -1,0 +1,24 @@
+name: Update
+# Follows the npm releases: the formula always points at the latest published tarball.
+on:
+  schedule: [{ cron: "17 */6 * * *" }]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  keyshroud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: Point the formula at the latest release
+        run: |
+          version=$(npm view keyshroud version)
+          url="https://registry.npmjs.org/keyshroud/-/keyshroud-$version.tgz"
+          sha=$(curl -fsSL "$url" | sha256sum | cut -d' ' -f1)
+          test ${#sha} -eq 64
+          sed -i -E "s|^  url \".*\"|  url \"$url\"|; s|^  sha256 \".*\"|  sha256 \"$sha\"|" Formula/keyshroud.rb
+          git diff --quiet && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "keyshroud $version"
+          git push

@@ -1,0 +1,26 @@
+name: Test
+on:
+  push: { branches: [main] }
+  pull_request:
+  workflow_run: { workflows: [Update], types: [completed] }
+permissions:
+  contents: read
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - name: Homebrew on the PATH (Linux runners)
+        if: runner.os == 'Linux'
+        run: echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+      - name: Install from this checkout and test
+        run: |
+          mkdir -p "$(brew --repository)/Library/Taps/dinhkarate"
+          ln -s "$PWD" "$(brew --repository)/Library/Taps/dinhkarate/homebrew-tap"
+          brew install dinhkarate/tap/keyshroud
+          brew test dinhkarate/tap/keyshroud
+          keyshroud --version
