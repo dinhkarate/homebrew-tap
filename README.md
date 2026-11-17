@@ -2,6 +2,9 @@
 
 Homebrew formulae for my tools.
 
+> Experimental. keyshroud's supported install is `npm install -g keyshroud`; this formula is not
+> part of its documentation yet.
+
 ```bash
 brew install dinhkarate/tap/keyshroud
 ```
