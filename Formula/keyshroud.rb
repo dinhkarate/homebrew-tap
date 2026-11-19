@@ -1,8 +1,8 @@
 class Keyshroud < Formula
   desc "Let AI coding agents use your secrets without ever seeing them"
   homepage "https://keyshroud.dev"
-  url "https://registry.npmjs.org/keyshroud/-/keyshroud-0.12.3.tgz"
-  sha256 "9265c3e9de595e314a8caa872dcc9b4724380c8b6fb7f7a1e3686a53d2d929b9"
+  url "https://registry.npmjs.org/keyshroud/-/keyshroud-0.13.0.tgz"
+  sha256 "d46b62fc1f37406b87bf9ee519c94fc767e9be866d86fc4c752851f28c2606aa"
   license "MIT"
 
   depends_on "node"
